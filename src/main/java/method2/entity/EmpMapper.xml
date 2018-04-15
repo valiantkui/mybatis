@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace映射文件的namespace必须等于Mapper映射器的全限定名 -->
+<mapper namespace="method2.dao.EmpDao">
+	<insert id="save" parameterType="method2.entity.Emp">
+		insert into emp values(#{id},#{name},#{password})
+	</insert>
+	
+	<!--  
+		id:要求唯一
+		resultType:返回结果的类型
+		parameterType:参数的类型
+	-->
+		<select id="findAll" 
+		resultType="method2.entity.Emp">
+		select * from emp
+	</select>
+		<select id="findOne" 
+			parameterType="java.lang.String"
+		resultType="method2.entity.Emp">
+		select * from emp where id = #{id}
+	</select>
+	
+	<update id="modify" parameterType="method2.entity.Emp">
+		update emp set name=#{name},password=#{password}
+			where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from emp where id=#{id}
+	</delete>
+	
+	<!--返回Map类型的结果 
+		map是java.util.Map的简写形式
+	 -->
+	<select id="findById2" parameterType="String" resultType="map">
+		select * from emp
+		where id = #{id}
+	</select>
+	
+	<!--如果数据库字段和实体类属性名不一样可以使用别名
+		如：empNo应和实体类属性名一样
+			pw应和实体类属性名一样
+	  -->
+	  <select id="findAll2">
+	  	select name,id empNo,password pw from emp
+	  </select>
+	  
+	  <!-- 使用ResultMap解决表的字段名与实体类的属性名不一致的情况 -->
+	  <select id="findById3" parameterType="String" 
+	  resultMap="emp2Map" >
+	  	select * from emp where id=#{id1}
+	  </select>
+	  
+	  <!-- 告诉mybatis怎么处理表的字段名和实体类的属性名的对应关系 -->
+	  <resultMap type="method2.entity.Emp" id="emp2Map">
+	  	<result property="name2" column="name" />
+	  	<result property="id2" column="id" />
+	  	<result property="password2" column="password" />
+	  </resultMap>
+</mapper>
+
+
+
+
+
+
+
